@@ -1,5 +1,7 @@
 # Lime State Machine
 
+[![codecov](https://codecov.io/gh/johnjuszczak/LSM/branch/main/graph/badge.svg)](https://app.codecov.io/gh/johnjuszczak/LSM)
+
 A modern, header-only finite state machine library focused on clarity and computational model accurate virtualization.
 
 ---

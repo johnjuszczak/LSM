@@ -2,9 +2,9 @@ name: coverage
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
   coverage:
@@ -35,7 +35,7 @@ jobs:
           llvm-profdata-18 merge -sparse build/cov-clang/coverage/*.profraw \
             -o build/cov-clang/coverage/coverage.profdata
 
-      - name: Report (text)
+      - name: Export lcov
         run: |
           ctest --preset cov-clang --show-only=json-v1 > build/cov-clang/ctest.json
           mapfile -t ALL < <(jq -r '.tests[].command[0]' build/cov-clang/ctest.json | sort -u)
@@ -46,14 +46,18 @@ jobs:
           (( ${#BINS[@]} > 0 )) || { echo "No test executables found"; exit 1; }
           OBJ_ARGS=()
           for o in "${BINS[@]}"; do OBJ_ARGS+=(-object "$o"); done
-          echo "${OBJ_ARGS[@]}"
-          llvm-cov-18 report -show-instantiation-summary \
+          llvm-cov-18 export \
+            -format=lcov \
             -instr-profile=build/cov-clang/coverage/coverage.profdata \
-            "${OBJ_ARGS[@]}" -sources include > build/cov-clang/coverage/report.txt
-          cat build/cov-clang/coverage/report.txt
+            "${OBJ_ARGS[@]}" \
+            -sources "include" \
+            > build/cov-clang/coverage/coverage.lcov
 
-      - name: Upload coverage
-        uses: actions/upload-artifact@v4
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          name: coverage
-          path: build/cov-clang/coverage/report.txt
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/cov-clang/coverage/coverage.lcov
+          flags: linux,llvm
+          fail_ci_if_error: true
+          verbose: true
