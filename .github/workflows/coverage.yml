@@ -50,7 +50,7 @@ jobs:
             -format=lcov \
             -instr-profile=build/cov-clang/coverage/coverage.profdata \
             "${OBJ_ARGS[@]}" \
-            -sources "$(pwd)/include" \
+            -sources "include" \
             > build/cov-clang/coverage/coverage.lcov
 
       - name: Upload to Codecov
