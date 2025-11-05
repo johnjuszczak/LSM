@@ -58,6 +58,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/cov-clang/coverage/coverage.lcov
-          flags: linux,llvm
           fail_ci_if_error: true
           verbose: true
