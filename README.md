@@ -11,6 +11,7 @@ A modern, header-only finite state machine library focused on clarity and comput
 - Table-driven or fluent transitions.
 - Predictable execution model: `on_event -> transition -> actions -> state update`.
 - No macros required; constexpr-friendly configuration.
+- Coroutine based machine available.
 
 ---
 
