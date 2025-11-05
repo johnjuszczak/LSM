@@ -52,11 +52,14 @@ jobs:
             "${OBJ_ARGS[@]}" \
             -sources "$(pwd)/include" \
             > build/cov-clang/coverage/coverage.lcov
+          prefix="$(pwd)/"
+          sed -E "s#^SF:${prefix}#SF:#" build/cov-clang/coverage/coverage.lcov \
+            > build/cov-clang/coverage/coverage.fixed.lcov
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: build/cov-clang/coverage/coverage.lcov
+          files: build/cov-clang/coverage/coverage.fixed.lcov
           fail_ci_if_error: true
           verbose: true
