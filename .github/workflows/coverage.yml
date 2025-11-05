@@ -1,0 +1,59 @@
+name: coverage
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-18 llvm-18 ninja-build jq
+
+      - name: Configure
+        run: cmake --preset cov-clang
+
+      - name: Build
+        run: cmake --build --preset cov-clang -j"$(nproc)"
+
+      - name: Test
+        run: |
+          rm -rf build/cov-clang/coverage
+          mkdir -p build/cov-clang/coverage
+          ctest --preset cov-clang --output-on-failure
+
+      - name: Merge profiles
+        run: |
+          llvm-profdata-18 merge -sparse build/cov-clang/coverage/*.profraw \
+            -o build/cov-clang/coverage/coverage.profdata
+
+      - name: Report (text)
+        run: |
+          ctest --preset cov-clang --show-only=json-v1 > build/cov-clang/ctest.json
+          mapfile -t ALL < <(jq -r '.tests[].command[0]' build/cov-clang/ctest.json | sort -u)
+          BINS=()
+          for b in "${ALL[@]}"; do
+            [[ -x "$b" && "$b" == "$(pwd)/build/cov-clang/"* ]] && BINS+=("$b")
+          done
+          (( ${#BINS[@]} > 0 )) || { echo "No test executables found"; exit 1; }
+          OBJ_ARGS=()
+          for o in "${BINS[@]}"; do OBJ_ARGS+=(-object "$o"); done
+          echo "${OBJ_ARGS[@]}"
+          llvm-cov-18 report -show-instantiation-summary \
+            -instr-profile=build/cov-clang/coverage/coverage.profdata \
+            "${OBJ_ARGS[@]}" -sources include > build/cov-clang/coverage/report.txt
+          cat build/cov-clang/coverage/report.txt
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: build/cov-clang/coverage/report.txt

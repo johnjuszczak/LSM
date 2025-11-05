@@ -1,0 +1,285 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24 },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "LSM_BUILD_EXAMPLES": "ON",
+        "LSM_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "std-23",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": "23"
+      }
+    },
+    {
+      "name": "ninja",
+      "hidden": true,
+      "generator": "Ninja"
+    },
+    {
+      "name": "debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+
+    {
+      "name": "win-msvc-23",
+      "inherits": [
+        "base",
+        "std-23"
+      ],
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+
+    {
+      "name": "win-clangcl-23",
+      "inherits": [
+        "base",
+        "std-23"
+      ],
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64"
+      },
+      "toolset": "ClangCL",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+
+    {
+      "name": "win-gpp-23-debug",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "win-gpp-23-release",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "release"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+
+    {
+      "name": "win-clangpp-23-debug",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "win-clangpp-23-release",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "release"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+
+    {
+      "name": "linux-gpp-23-debug",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-gpp-23-release",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "release"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+
+    {
+      "name": "linux-clangpp-23-debug",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-clangpp-23-release",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "release"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+
+    {
+      "name": "cov-clang",
+      "inherits": [
+        "ninja",
+        "std-23",
+        "debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++-18",
+        "CMAKE_CXX_FLAGS": "-fprofile-instr-generate -fcoverage-mapping -O0 -g",
+        "CMAKE_EXE_LINKER_FLAGS": "-fprofile-instr-generate",
+        "LSM_BUILD_EXAMPLES": "OFF",
+        "LSM_BUILD_TESTS": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    {"name": "build-win-msvc-23-debug",   "configurePreset": "win-msvc-23",   "configuration": "Debug",   "jobs": 0},
+    {"name": "build-win-msvc-23-release", "configurePreset": "win-msvc-23",   "configuration": "Release", "jobs": 0},
+
+    {"name": "build-win-clangcl-23-debug",   "configurePreset": "win-clangcl-23", "configuration": "Debug",   "jobs": 0},
+    {"name": "build-win-clangcl-23-release", "configurePreset": "win-clangcl-23", "configuration": "Release", "jobs": 0},
+
+    {"name": "build-win-gpp-23-debug",       "configurePreset": "win-gpp-23-debug",       "jobs": 0},
+    {"name": "build-win-gpp-23-release",     "configurePreset": "win-gpp-23-release",     "jobs": 0},
+
+    {"name": "build-win-clangpp-23-debug",   "configurePreset": "win-clangpp-23-debug",   "jobs": 0},
+    {"name": "build-win-clangpp-23-release", "configurePreset": "win-clangpp-23-release", "jobs": 0},
+
+    {"name": "build-linux-gpp-23-debug",     "configurePreset": "linux-gpp-23-debug",     "jobs": 0},
+    {"name": "build-linux-gpp-23-release",   "configurePreset": "linux-gpp-23-release",   "jobs": 0},
+
+    {"name": "build-linux-clangpp-23-debug",   "configurePreset": "linux-clangpp-23-debug",   "jobs": 0},
+    {"name": "build-linux-clangpp-23-release", "configurePreset": "linux-clangpp-23-release", "jobs": 0},
+
+    {"name": "cov-clang",                      "configurePreset": "cov-clang",                "jobs": 0}
+  ],
+
+  "testPresets": [
+    {"name": "test-win-msvc-23-debug",   "configurePreset": "win-msvc-23",   "configuration": "Debug",   "output": {"outputOnFailure": true}},
+    {"name": "test-win-msvc-23-release", "configurePreset": "win-msvc-23",   "configuration": "Release", "output": {"outputOnFailure": true}},
+
+    {"name": "test-win-clangcl-23-debug",   "configurePreset": "win-clangcl-23", "configuration": "Debug",   "output": {"outputOnFailure": true}},
+    {"name": "test-win-clangcl-23-release", "configurePreset": "win-clangcl-23", "configuration": "Release", "output": {"outputOnFailure": true}},
+
+    {"name": "test-win-gpp-23-debug",       "configurePreset": "win-gpp-23-debug",       "output": {"outputOnFailure": true}},
+    {"name": "test-win-gpp-23-release",     "configurePreset": "win-gpp-23-release",     "output": {"outputOnFailure": true}},
+
+    {"name": "test-win-clangpp-23-debug",   "configurePreset": "win-clangpp-23-debug",   "output": {"outputOnFailure": true}},
+    {"name": "test-win-clangpp-23-release", "configurePreset": "win-clangpp-23-release", "output": {"outputOnFailure": true}},
+
+    {"name": "test-linux-gpp-23-debug",     "configurePreset": "linux-gpp-23-debug",     "output": {"outputOnFailure": true}},
+    {"name": "test-linux-gpp-23-release",   "configurePreset": "linux-gpp-23-release",   "output": {"outputOnFailure": true}},
+
+    {"name": "test-linux-clangpp-23-debug",   "configurePreset": "linux-clangpp-23-debug",   "output": {"outputOnFailure": true}},
+    {"name": "test-linux-clangpp-23-release", "configurePreset": "linux-clangpp-23-release", "output": {"outputOnFailure": true}},
+    
+    {
+      "name": "cov-clang",
+      "configurePreset": "cov-clang",
+      "environment": {
+        "LLVM_PROFILE_FILE": "${sourceDir}/build/${presetName}/coverage/%p_%m.profraw"
+      },
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

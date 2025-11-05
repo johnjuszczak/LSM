@@ -1,0 +1,120 @@
+add_executable(unhandled_hooks_test unhandled_hooks.cpp)
+target_link_libraries(unhandled_hooks_test PRIVATE lsm)
+add_test(NAME unhandled_hooks_test COMMAND unhandled_hooks_test)
+
+add_executable(selection_priority_test selection_priority.cpp)
+target_link_libraries(selection_priority_test PRIVATE lsm)
+add_test(NAME selection_priority_test COMMAND selection_priority_test)
+
+add_executable(deferral_test deferral.cpp)
+target_link_libraries(deferral_test PRIVATE lsm)
+add_test(NAME deferral_test COMMAND deferral_test)
+
+add_executable(enter_exit_test enter_exit.cpp)
+target_link_libraries(enter_exit_test PRIVATE lsm)
+add_test(NAME enter_exit_test COMMAND enter_exit_test)
+
+add_executable(completion_test completion.cpp)
+target_link_libraries(completion_test PRIVATE lsm)
+add_test(NAME completion_test COMMAND completion_test)
+
+add_executable(completion_order_test completion_order.cpp)
+target_link_libraries(completion_order_test PRIVATE lsm)
+add_test(NAME completion_order_test COMMAND completion_order_test)
+
+add_executable(policy_move_test policy_move.cpp)
+target_link_libraries(policy_move_test PRIVATE lsm)
+add_test(NAME policy_move_test COMMAND policy_move_test)
+
+add_executable(coroutine_semantics_test coroutine_semantics.cpp)
+target_link_libraries(coroutine_semantics_test PRIVATE lsm)
+add_test(NAME coroutine_semantics_test COMMAND coroutine_semantics_test)
+
+add_executable(header_include_core header_include_core.cpp)
+target_link_libraries(header_include_core PRIVATE lsm)
+
+add_executable(header_include_cosm header_include_cosm.cpp)
+target_link_libraries(header_include_cosm PRIVATE lsm)
+
+add_executable(header_include_all header_include_all.cpp)
+target_link_libraries(header_include_all PRIVATE lsm)
+
+add_executable(perf_smoke_test perf_smoke.cpp)
+target_link_libraries(perf_smoke_test PRIVATE lsm)
+add_test(NAME perf_smoke_test COMMAND perf_smoke_test)
+
+add_executable(select_commit_test select_commit.cpp)
+target_link_libraries(select_commit_test PRIVATE lsm)
+add_test(NAME select_commit_test COMMAND select_commit_test)
+
+add_executable(guard_concepts_test guard_concepts.cpp)
+target_link_libraries(guard_concepts_test PRIVATE lsm)
+add_test(NAME guard_concepts_test COMMAND guard_concepts_test)
+
+add_executable(publisher_policy_test publisher_policy.cpp)
+target_link_libraries(publisher_policy_test PRIVATE lsm)
+add_test(NAME publisher_policy_test COMMAND publisher_policy_test)
+
+add_executable(handlers_concepts_test handlers_concepts.cpp)
+target_link_libraries(handlers_concepts_test PRIVATE lsm)
+add_test(NAME handlers_concepts_test COMMAND handlers_concepts_test)
+
+add_executable(handlers_bindings_test handlers_bindings.cpp)
+target_link_libraries(handlers_bindings_test PRIVATE lsm)
+add_test(NAME handlers_bindings_test COMMAND handlers_bindings_test)
+
+add_executable(any_priority_test any_priority.cpp)
+target_link_libraries(any_priority_test PRIVATE lsm)
+add_test(NAME any_priority_test COMMAND any_priority_test)
+
+add_executable(value_completion_sort_test value_completion_sort.cpp)
+target_link_libraries(value_completion_sort_test PRIVATE lsm)
+add_test(NAME value_completion_sort_test COMMAND value_completion_sort_test)
+
+add_executable(handlers_exit_test handlers_exit.cpp)
+target_link_libraries(handlers_exit_test PRIVATE lsm)
+add_test(NAME handlers_exit_test COMMAND handlers_exit_test)
+
+add_executable(effect_return_output_test effect_return_output.cpp)
+target_link_libraries(effect_return_output_test PRIVATE lsm)
+add_test(NAME effect_return_output_test COMMAND effect_return_output_test)
+
+add_executable(effect_publisher_default_test effect_publisher_default.cpp)
+target_link_libraries(effect_publisher_default_test PRIVATE lsm)
+add_test(NAME effect_publisher_default_test COMMAND effect_publisher_default_test)
+
+add_executable(cosm_adapter_pipeline_test cosm_adapter_pipeline.cpp)
+target_link_libraries(cosm_adapter_pipeline_test PRIVATE lsm)
+add_test(NAME cosm_adapter_pipeline_test COMMAND cosm_adapter_pipeline_test)
+
+add_executable(cosm_cobuilder_test cosm_cobuilder.cpp)
+target_link_libraries(cosm_cobuilder_test PRIVATE lsm)
+add_test(NAME cosm_cobuilder_test COMMAND cosm_cobuilder_test)
+
+add_executable(cosm_branch_coverage_test cosm_branch_coverage.cpp)
+target_link_libraries(cosm_branch_coverage_test PRIVATE lsm)
+add_test(NAME cosm_branch_coverage_test COMMAND cosm_branch_coverage_test)
+
+add_executable(guard_combined_test guard_combined.cpp)
+target_link_libraries(guard_combined_test PRIVATE lsm)
+add_test(NAME guard_combined_test COMMAND guard_combined_test)
+
+add_executable(cosm_task_edges_test cosm_task_edges.cpp)
+target_link_libraries(cosm_task_edges_test PRIVATE lsm)
+add_test(NAME cosm_task_edges_test COMMAND cosm_task_edges_test)
+
+add_executable(machine_on_state_bindings_test machine_on_state_bindings.cpp)
+target_link_libraries(machine_on_state_bindings_test PRIVATE lsm)
+add_test(NAME machine_on_state_bindings_test COMMAND machine_on_state_bindings_test)
+
+add_executable(machine_deferral_unhandled_test machine_deferral_unhandled.cpp)
+target_link_libraries(machine_deferral_unhandled_test PRIVATE lsm)
+add_test(NAME machine_deferral_unhandled_test COMMAND machine_deferral_unhandled_test)
+
+add_executable(machine_dispatch_queue_test machine_dispatch_queue.cpp)
+target_link_libraries(machine_dispatch_queue_test PRIVATE lsm)
+add_test(NAME machine_dispatch_queue_test COMMAND machine_dispatch_queue_test)
+
+add_executable(machine_deferral_replay_test machine_deferral_replay.cpp)
+target_link_libraries(machine_deferral_replay_test PRIVATE lsm)
+add_test(NAME machine_deferral_replay_test COMMAND machine_deferral_replay_test)

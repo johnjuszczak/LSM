@@ -1,0 +1,27 @@
+---
+AccessModifierOffset: -4
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+BasedOnStyle: LLVM
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  BeforeElse: true
+BreakBeforeBraces: Custom
+ColumnLimit: 0
+ContinuationIndentWidth: 4
+IndentAccessModifiers: false
+IndentWidth: 4
+IncludeBlocks: Preserve
+LambdaBodyIndentation: Signature
+NamespaceIndentation: None
+PointerAlignment: Left
+ReflowComments: false
+SpaceBeforeParens: Never
+UseTab: Never
+...
