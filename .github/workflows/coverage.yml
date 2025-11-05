@@ -61,5 +61,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/cov-clang/coverage/coverage.fixed.lcov
+          disable_search: true
           fail_ci_if_error: true
           verbose: true
