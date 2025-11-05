@@ -1,23 +1,14 @@
 # Lime State Machine
 
-[![Build][build-badge]][build-url]
-[![Tests][tests-badge]][tests-url]
-[![Coverage][cov-badge]][cov-url]
-[![Docs][docs-badge]][docs-url]
-[![Conan][conan-badge]][conan-url]
-[![vcpkg][vcpkg-badge]][vcpkg-url]
-[![License][license-badge]][license-url]
-[![C++2x][cpp-badge]][cpp-url]
-
-A modern, header-only C++20/23/26 finite state machine library focused on clarity, zero runtime deps, and compile-time ergonomics where it counts.
+A modern, header-only finite state machine library focused on clarity and computational model accurate virtualization.
 
 ---
 
 ## Highlights
 
-- Header-only, zero-dependency core (just the standard library).
+- Header-only, zero-dependency core.
 - Strongly-typed states, events, and actions.
-- Table-driven or fluent transitions (pick your style).
+- Table-driven or fluent transitions.
 - Predictable execution model: `on_event -> transition -> actions -> state update`.
 - No macros required; constexpr-friendly configuration.
 
@@ -57,7 +48,7 @@ cmake -S . -B build -DLSM_BUILD_EXAMPLES=ON
 cmake --build build --config Release
 ```
 
-(`LSM_BUILD_TESTS=ON` is optional if you also want the test suite.)
+`LSM_BUILD_TESTS=ON` is optional if you also want the test suite.
 
 ---
 
