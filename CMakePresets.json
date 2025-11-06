@@ -207,18 +207,20 @@
         "rhs": "Linux"
       }
     },
-
+    
     {
-      "name": "cov-clang",
+      "name": "cov-gcc",
       "inherits": [
         "ninja",
         "std-23",
         "debug"
       ],
+      "binaryDir": "${sourceDir}/build/cov-gcc",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "clang++-18",
-        "CMAKE_CXX_FLAGS": "-fprofile-instr-generate -fcoverage-mapping -O0 -g",
-        "CMAKE_EXE_LINKER_FLAGS": "-fprofile-instr-generate",
+        "CMAKE_CXX_COMPILER": "g++-14",
+        "CMAKE_CXX_FLAGS": "-O0 -g --coverage",
+        "CMAKE_EXE_LINKER_FLAGS": "--coverage",
+        "CMAKE_SHARED_LINKER_FLAGS": "--coverage",
         "LSM_BUILD_EXAMPLES": "OFF",
         "LSM_BUILD_TESTS": "ON"
       },
@@ -228,6 +230,7 @@
         "rhs": "Linux"
       }
     }
+
   ],
 
   "buildPresets": [
@@ -249,7 +252,7 @@
     {"name": "build-linux-clangpp-23-debug",   "configurePreset": "linux-clangpp-23-debug",   "jobs": 0},
     {"name": "build-linux-clangpp-23-release", "configurePreset": "linux-clangpp-23-release", "jobs": 0},
 
-    {"name": "cov-clang",                      "configurePreset": "cov-clang",                "jobs": 0}
+    {"name": "cov-gcc",                      "configurePreset": "cov-gcc",                "jobs": 0}
   ],
 
   "testPresets": [
@@ -272,11 +275,8 @@
     {"name": "test-linux-clangpp-23-release", "configurePreset": "linux-clangpp-23-release", "output": {"outputOnFailure": true}},
     
     {
-      "name": "cov-clang",
-      "configurePreset": "cov-clang",
-      "environment": {
-        "LLVM_PROFILE_FILE": "${sourceDir}/build/${presetName}/coverage/%p_%m.profraw"
-      },
+      "name": "cov-gcc",
+      "configurePreset": "cov-gcc",
       "output": {
         "outputOnFailure": true
       }
