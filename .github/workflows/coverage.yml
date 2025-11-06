@@ -16,51 +16,37 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-18 llvm-18 ninja-build jq
+          sudo apt-get install -y gcc-14 g++-14 lcov ninja-build
 
       - name: Configure
-        run: cmake --preset cov-clang
+        run: cmake --preset cov-gcc
 
       - name: Build
-        run: cmake --build --preset cov-clang -j"$(nproc)"
+        run: cmake --build --preset cov-gcc -j"$(nproc)"
 
       - name: Test
         run: |
-          rm -rf build/cov-clang/coverage
-          mkdir -p build/cov-clang/coverage
-          ctest --preset cov-clang --output-on-failure
+          rm -rf build/cov-gcc/coverage
+          mkdir -p build/cov-gcc/coverage
+          ctest --preset cov-gcc --output-on-failure
 
-      - name: Merge profiles
+      - name: Capture LCOV
         run: |
-          llvm-profdata-18 merge -sparse build/cov-clang/coverage/*.profraw \
-            -o build/cov-clang/coverage/coverage.profdata
-
-      - name: Export lcov
-        run: |
-          ctest --preset cov-clang --show-only=json-v1 > build/cov-clang/ctest.json
-          mapfile -t ALL < <(jq -r '.tests[].command[0]' build/cov-clang/ctest.json | sort -u)
-          BINS=()
-          for b in "${ALL[@]}"; do
-            [[ -x "$b" && "$b" == "$(pwd)/build/cov-clang/"* ]] && BINS+=("$b")
-          done
-          (( ${#BINS[@]} > 0 )) || { echo "No test executables found"; exit 1; }
-          OBJ_ARGS=()
-          for o in "${BINS[@]}"; do OBJ_ARGS+=(-object "$o"); done
-          llvm-cov-18 export \
-            -format=lcov \
-            -instr-profile=build/cov-clang/coverage/coverage.profdata \
-            "${OBJ_ARGS[@]}" \
-            -sources include \
-            > build/cov-clang/coverage/coverage.lcov
-          prefix="$(pwd)/"
-          sed -E "s#^SF:${prefix}#SF:#" build/cov-clang/coverage/coverage.lcov \
-            > build/cov-clang/coverage/coverage.fixed.lcov
+          geninfo build/cov-gcc \
+            --gcov-tool gcov-14 \
+            --output-filename build/cov-gcc/coverage/coverage.raw.lcov \
+            --base-directory "${{ github.workspace }}" \
+            --no-external
+          lcov --gcov-tool gcov-14 \
+            --extract build/cov-gcc/coverage/coverage.raw.lcov "${{ github.workspace }}/include/*" \
+            -o build/cov-gcc/coverage/coverage.lcov
+          rm -f build/cov-gcc/coverage/coverage.raw.lcov
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: build/cov-clang/coverage/coverage.fixed.lcov
+          files: build/cov-gcc/coverage/coverage.lcov
           disable_search: true
           fail_ci_if_error: true
           verbose: true
